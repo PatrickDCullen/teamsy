@@ -4,6 +4,7 @@ namespace App;
 
 use App\Scopes\TenantScope;
 use App\Traits\BelongsToTenant;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,4 +37,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function avatarUrl()
+    {
+        if($this->photo) {
+            return Storage::disk('s3-public')->url($this->photo);
+        }
+        return '';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == 'Admin';
+    }
+
+    public function isHR()
+    {
+        return $this->role == 'Human Resources';
+    }
 }

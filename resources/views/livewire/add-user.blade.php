@@ -4,7 +4,6 @@
             <x-text-input
                 wire:model="name"
                 label="Name"
-                :required="true"
                 placeholder="Jeffrey Way"
                 class="col-span-6 sm:col-span-3"/>
 
@@ -12,7 +11,6 @@
                 wire:model="email"
                 type="email"
                 label="Email"
-                :required="true"
                 placeholder="jeffrey@laracasts.com"
                 class="col-span-6 sm:col-span-3"/>
 
@@ -21,16 +19,15 @@
                 <select wire:model="department"
                         id="department"
                         class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                    <option value="human_resources">Human Resources</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="information_technology">Information Technology</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Information Technology">Information Technology</option>
                 </select>
             </div>
 
             <x-text-input
                 wire:model="title"
                 label="Title"
-                :required="true"
                 placeholder="Instructor"
                 class="col-span-6 sm:col-span-3"/>
 
@@ -42,7 +39,9 @@
                     <div class="flex-shrink-0 h-10 w-10 mr-4">
                         @if($photo)
                             <div class="flex-shrink-0 h-10 w-10">
-                                <img src="{{$photo->temporaryUrl()}}" alt="" class="h-10 w-10 rounded-full">
+                                <img class="h-10 w-10 rounded-full"
+                                     src="{{$photo->temporaryUrl()}}"
+                                     alt="">
                             </div>
                         @else
                             <svg class="h-10 w-10 text-gray-300 rounded-full" fill="currentColor" viewBox="0 0 24 24">
@@ -53,14 +52,23 @@
                     </div>
                     <div>
                         <input type="file" wire:model="photo">
+                    </div>
+                    @error('photo')
+                    <div class="text-sm text-red-500 mt-2">{{ $message }}</div> @enderror
+                </div>
+            </div>
 
-                        @error('photo')
-                            <span class="error">{{ $message }}</span>
-                        @enderror
-
-                        <button wire:click="save">Save Photo</button>
+            <div class="col-span-6">
+                <label class="block text-sm leading-5 font-medium text-gray-700 mb-2">
+                    Application
+                </label>
+                <div class="flex flex-items-center">
+                    <div>
+                        <input type="file">
                     </div>
                 </div>
+                @error('application')
+                <div class="text-sm text-red-500 mt-2">{{ $message }}</div> @enderror
             </div>
 
             <div class="col-span-6 sm:col-span-3">
@@ -72,22 +80,21 @@
                     <option value="0">Inactive</option>
                 </select>
             </div>
-
             <div class="col-span-6 sm:col-span-2">
                 <label for="role" class="block text-sm font-medium leading-5 text-gray-700">Role</label>
                 <select wire:model="role"
                         id="role"
                         class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                    <option value="admin">Admin</option>
-                    <option value="manager">Manager</option>
-                    <option value="member">Team Member</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Member">Team Member</option>
                 </select>
             </div>
-            @if (session()->has('success'))
-                {{ session('success') }}
+
+            @if(session()->has('success'))
+                {{session('success')}}
             @endif
         </div>
-
         <div class="mt-8 border-t border-gray-200 pt-5">
             <div class="flex justify-end">
                 <span class="inline-flex rounded-md shadow-sm">
@@ -99,5 +106,4 @@
             </div>
         </div>
     </form>
-
 </div>
